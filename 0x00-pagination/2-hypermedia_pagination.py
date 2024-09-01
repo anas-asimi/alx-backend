@@ -2,7 +2,7 @@
 """
 2-hypermedia_pagination.py
 """
-from typing import List
+from typing import List, Dict
 import math
 import csv
 from typing import Tuple
@@ -53,7 +53,7 @@ class Server:
         indexs = index_range(page, page_size)
         return self.dataset()[indexs[0]: indexs[1]]
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
         data = self.get_page(page, page_size)
