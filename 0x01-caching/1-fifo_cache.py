@@ -62,7 +62,7 @@ class FIFOCache(BaseCaching):
             for key, value in self.cache_data.items():
                 if oldest_key is None:
                     oldest_key = key
-                if self.cache_data.get(oldest_key).get('date') > value.get('date'):
+                if self.cache_data[oldest_key]['date'] > value['date']:
                     oldest_key = key
             del self.cache_data[oldest_key]
 
