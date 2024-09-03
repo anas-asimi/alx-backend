@@ -12,11 +12,6 @@ class FIFOCache(BaseCaching):
         BaseCaching (_type_): _description_
     """
 
-    # def __init__(self):
-    #     """ Initiliaze
-    #     """
-    #     super.__init__()
-
     def put(self, key, item):
         """ Add an item in the cache
         """
@@ -33,6 +28,7 @@ class FIFOCache(BaseCaching):
                     oldest_key = key
                 if self.cache_data[oldest_key]['date'] > value['date']:
                     oldest_key = key
+            print("DISCARD:", oldest_key)
             del self.cache_data[oldest_key]
 
     def get(self, key):
