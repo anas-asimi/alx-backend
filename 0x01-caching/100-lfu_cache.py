@@ -33,33 +33,27 @@ class LFUCache(BaseCaching):
         if key is None or item is None:
             return None
 
-        if key in self.cache_data:
-            self.cache_data[key] = item
-            return None
-
-        if len(self.cache_data) == self.MAX_ITEMS:
+        if key not in self.cache_data and len(self.cache_data) == self.MAX_ITEMS:
             frequently_used_keys = [
                 k for k in self.get_history[-7:] if k in self.cache_data]
 
-            for k in self.cache_data.keys():
-                if k not in frequently_used_keys:
-                    self.cache_data.pop(k)
-                    print("DISCARD:", k)
-                    self.cache_data[key] = item
-                    return
+            if any(k not in frequently_used_keys for k in self.cache_data.keys()):
+                for k in self.cache_data.keys():
+                    if k not in frequently_used_keys:
+                        self.cache_data.pop(k)
+                        print("DISCARD:", k)
+                        break
+            else:
+                frequently_used_keys_counted = Counter(frequently_used_keys)
+                print(frequently_used_keys_counted.values())
+                lowest_number = list(frequently_used_keys_counted.values())[0]
 
-            frequently_used_keys_counted = Counter(frequently_used_keys)
-            print(frequently_used_keys_counted.values())
-            lowest_number = list(frequently_used_keys_counted.values())[0]
-
-            for k in self.cache_data.keys():
-                if frequently_used_keys_counted.get(k) == lowest_number:
-                    self.cache_data.pop(k)
-                    print("DISCARD:", k)
-                    self.cache_data[key] = item
-                    return
-        else:
-            self.cache_data[key] = item
+                for k in self.cache_data.keys():
+                    if frequently_used_keys_counted.get(k) == lowest_number or k not in frequently_used_keys:
+                        self.cache_data.pop(k)
+                        print("DISCARD:", k)
+                        break
+        self.cache_data[key] = item
 
     def get(self, key):
         """ Get an item by key
