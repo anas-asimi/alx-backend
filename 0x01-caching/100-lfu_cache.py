@@ -39,7 +39,7 @@ class LFUCache(BaseCaching):
 
         if len(self.cache_data) == self.MAX_ITEMS:
             frequently_used_keys = [
-                k for k in self.get_history[-8:] if k in self.cache_data]
+                k for k in self.get_history[-7:] if k in self.cache_data]
 
             for k in self.cache_data.keys():
                 if k not in frequently_used_keys:
