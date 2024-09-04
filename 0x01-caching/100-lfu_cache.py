@@ -46,7 +46,6 @@ class LFUCache(BaseCaching):
                         break
             else:
                 frequently_used_keys_counted = Counter(frequently_used_keys)
-                print(frequently_used_keys_counted.values())
                 lowest_number = list(frequently_used_keys_counted.values())[0]
 
                 for k in self.cache_data.keys():
