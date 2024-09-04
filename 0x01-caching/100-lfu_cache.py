@@ -34,8 +34,9 @@ class LFUCache(BaseCaching):
             return None
 
         if key not in self.cache_data and len(self.cache_data) == self.MAX_ITEMS:
+            LENGTH = 10
             frequently_used_keys = [
-                k for k in self.get_history[-7:] if k in self.cache_data]
+                k for k in self.get_history if k in self.cache_data]
 
             if any(k not in frequently_used_keys for k in self.cache_data.keys()):
                 for k in self.cache_data.keys():
