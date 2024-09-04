@@ -35,27 +35,30 @@ class LFUCache(BaseCaching):
 
         if key not in self.cache_data \
                 and len(self.cache_data) == self.MAX_ITEMS:
-            LENGTH = 10
-            frequently_used_keys = [
-                k for k in self.get_history if k in self.cache_data]
-
-            if any(k not in frequently_used_keys
-                   for k in self.cache_data.keys()):
+            key_to_discard = None
+            elements_never_used = [
+                k for k in self.cache_data.keys() if k not in self.get_history]
+            if len(elements_never_used) > 0:
                 for k in self.cache_data.keys():
-                    if k not in frequently_used_keys:
-                        self.cache_data.pop(k)
-                        print("DISCARD:", k)
+                    if k in elements_never_used:
+                        key_to_discard = k
                         break
+
             else:
-                frequently_used_keys_counted = Counter(frequently_used_keys)
-                lowest_number = list(frequently_used_keys_counted.values())[0]
-
+                frequently_used_keys = [
+                    k for k in self.get_history if k in self.cache_data]
+                frequently_used_keys_counted = Counter(
+                    frequently_used_keys)
+                lowest_number = list(
+                    frequently_used_keys_counted.values())[0]
                 for k in self.cache_data.keys():
-                    if frequently_used_keys_counted.get(k) == lowest_number \
-                            or k not in frequently_used_keys:
-                        self.cache_data.pop(k)
-                        print("DISCARD:", k)
+                    if frequently_used_keys_counted.get(k) == lowest_number:
+                        key_to_discard = k
                         break
+
+            self.cache_data.pop(key_to_discard)
+            print("DISCARD:", key_to_discard)
+
         self.cache_data[key] = item
 
     def get(self, key):
