@@ -66,6 +66,4 @@ class LFUCache(BaseCaching):
         """
         if key is not None and key in self.cache_data:
             self.get_history.append(key)
-            if len(self.get_history) == 10:
-                self.get_history.pop(0)
         return self.cache_data.get(key)
