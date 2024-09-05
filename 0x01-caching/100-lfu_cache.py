@@ -34,7 +34,7 @@ class LFUCache(BaseCaching):
             return None
 
         if key not in self.cache_data \
-                and len(self.cache_data) == self.MAX_ITEMS:
+                and len(self.cache_data) == BaseCaching.MAX_ITEMS:
             key_to_discard = None
             elements_never_used = [
                 k for k in self.cache_data.keys() if k not in self.get_history]
